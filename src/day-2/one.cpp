@@ -6,14 +6,14 @@
 
 /**
  * @brief Program that reads comma-separated number ranges from input.txt,
- * generates all numbers in each range, and counts numbers where the first
+ * generates all numbers in each range, and totals numbers where the first
  * half of digits equals the second half.
  *
  * For each number in a range:
  * - Convert to string
  * - Check if digit length is even
  * - If even, split in half and compare both halves
- * - If halves are equal, increment the count
+ * - If halves are equal, increment the total
  *
  * @return int 0 on successful completion, 1 if input.txt could not be opened.
  */
@@ -24,7 +24,7 @@ int main() {
     return 1;
   }
 
-  long long count = 0;
+  long long total = 0;
   std::string line;
 
   while (std::getline(file, line)) {
@@ -57,9 +57,8 @@ int main() {
         if (len % 2 == 0) {
           std::string firstHalf = numStr.substr(0, len / 2);
           std::string secondHalf = numStr.substr(len / 2);
-
           if (firstHalf == secondHalf) {
-            count++;
+            total = num + total;
           }
         }
       }
@@ -67,7 +66,7 @@ int main() {
   }
 
   file.close();
-  std::cout << count << std::endl;
+  std::cout << total << std::endl;
 
   return 0;
 }
