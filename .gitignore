@@ -1,0 +1,4 @@
+# Compiled binaries
+*.exe
+*.out
+src/day-1/main
