@@ -2,6 +2,7 @@
 *.exe
 *.out
 src/day-1/main
+src/day-2/main
 
 # CodeQL
 _codeql_detected_source_root
