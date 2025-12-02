@@ -41,8 +41,14 @@ int main() {
         continue;
       }
 
-      long long start = std::stoll(range.substr(0, dashPos));
-      long long end = std::stoll(range.substr(dashPos + 1));
+      long long start, end;
+      try {
+        start = std::stoll(range.substr(0, dashPos));
+        end = std::stoll(range.substr(dashPos + 1));
+      } catch (const std::exception& e) {
+        std::cerr << "Error parsing range: " << range << std::endl;
+        continue;
+      }
 
       for (long long num = start; num <= end; num++) {
         std::string numStr = std::to_string(num);
