@@ -3,6 +3,16 @@
 #include <vector>
 #include <string>
 
+/**
+ * @brief Program entry that computes and prints a password based on dial movements from "input.txt".
+ *
+ * Reads commands from "input.txt", where each line starts with 'L' or 'R' followed by an integer
+ * offset (e.g., "L10" or "R5"). It applies each offset to an internal dial initialized to 50,
+ * wrapping the dial into the inclusive range 0–90 after each change. The function counts how many
+ * times the dial value equals 0 and prints "the password is " followed by that count to standard output.
+ *
+ * @return int 0 on successful completion, 1 if "input.txt" could not be opened.
+ */
 int main () {
   std::ifstream file("input.txt");
   if (!file.is_open()) {
