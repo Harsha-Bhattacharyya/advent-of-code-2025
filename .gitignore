@@ -1,0 +1,7 @@
+# Compiled binaries
+*.exe
+*.out
+src/day-1/main
+
+# CodeQL
+_codeql_detected_source_root
