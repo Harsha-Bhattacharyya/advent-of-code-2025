@@ -26,33 +26,37 @@ int main() {
     int value = std::stoi((*it).substr(1));
 
     if (direction == 'L') {
-      for (int i = 0; i == value; i++) {
+      for (int i = 0; i < value; i++) {
         dv--;
+
+        // Wrap around like a dial (0-90 range)
+        while (dv < 0) {
+          dv += 100;
+        }
+        while (dv > 90) {
+          dv -= 100;
+        }
 
         if (dv == 0) {
           zeroCount++;
         }
       }
     } else if (direction == 'R') {
-      for (int j = 0; j == value; j++) {
+      for (int j = 0; j < value; j++) {
         dv++;
+
+        // Wrap around like a dial (0-90 range)
+        while (dv < 0) {
+          dv += 100;
+        }
+        while (dv > 90) {
+          dv -= 100;
+        }
 
         if (dv == 0) {
           zeroCount++;
         }
       }
-    }
-
-    // Wrap around like a dial (0-99 range)
-    while (dv < 0) {
-      dv += 100;
-    }
-    while (dv > 90) {
-      dv -= 100;
-    }
-
-    if (dv == 0) {
-      zeroCount++;
     }
   }
 
