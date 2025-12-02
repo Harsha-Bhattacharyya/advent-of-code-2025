@@ -5,6 +5,10 @@
 
 int main () {
   std::ifstream file("input.txt");
+  if (!file.is_open()) {
+    std::cerr << "Error: Could not open input.txt" << std::endl;
+    return 1;
+  }
   std::vector<std::string> input;
   std::string line;
   
