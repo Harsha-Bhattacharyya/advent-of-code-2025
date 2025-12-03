@@ -4,6 +4,7 @@
 src/day-1/main
 src/day-2/main
 src/day-2/two_exec
+src/day-3/one_exec
 
 # CodeQL
 _codeql_detected_source_root
