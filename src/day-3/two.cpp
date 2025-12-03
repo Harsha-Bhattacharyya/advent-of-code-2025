@@ -41,21 +41,16 @@ int main() {
       }
     }
 
-    if (digits.size() >= 12) {
+    if (digits.size() > 0) {
       // Sort digits in descending order
       std::sort(digits.begin(), digits.end(), std::greater<int>());
 
-      // Take the 12 largest digits and form the largest joltage
+      // Determine how many digits to use (12 or all if fewer)
+      size_t numDigits = (digits.size() >= 12) ? 12 : digits.size();
+
+      // Form the largest joltage from the selected digits
       long long joltage = 0;
-      for (int i = 0; i < 12; i++) {
-        joltage = joltage * 10 + digits[i];
-      }
-      total += joltage;
-    } else if (digits.size() > 0) {
-      // If fewer than 12 digits, use all available digits
-      std::sort(digits.begin(), digits.end(), std::greater<int>());
-      long long joltage = 0;
-      for (size_t i = 0; i < digits.size(); i++) {
+      for (size_t i = 0; i < numDigits; i++) {
         joltage = joltage * 10 + digits[i];
       }
       total += joltage;
