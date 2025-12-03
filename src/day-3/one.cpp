@@ -6,14 +6,13 @@
 
 /**
  * @brief Program that reads lines from input.txt, extracts digits,
- * sorts them in descending order, combines the top 2 digits into
- * a 2-digit number, and sums them up.
+ * finds the two highest digits, and combines them into a 2-digit number
+ * where the digit appearing first in the original line is in the tens place.
  *
  * For each line:
- * - Extract all digit characters into an int array
- * - Sort the array in descending order
- * - Take the first two digits (highest values)
- * - Combine them into a 2-digit number (first * 10 + second)
+ * - Extract all digit characters with their positions
+ * - Sort to find the two highest digits
+ * - Combine them: the one appearing first in original line is in tens place
  * - Add to total
  *
  * @return int 0 on successful completion, 1 if input.txt could not be opened.
@@ -33,25 +32,40 @@ int main() {
       continue;
     }
 
-    // Extract digits from the line into a vector
-    std::vector<int> digits;
+    // Extract digits from the line into a vector with their positions
+    std::vector<std::pair<int, size_t>> digits;  // (digit value, position)
 
-    for (char c : line) {
-      if (c >= '0' && c <= '9') {
-        digits.push_back(c - '0');
+    for (size_t i = 0; i < line.length(); i++) {
+      if (line[i] >= '0' && line[i] <= '9') {
+        digits.push_back({line[i] - '0', i});
       }
     }
 
-    // Sort digits in descending order to get highest first
-    std::sort(digits.begin(), digits.end(), std::greater<int>());
-
-    // Combine the first 2 digits into a 2-digit number
     if (digits.size() >= 2) {
-      int twoDigitNumber = digits[0] * 10 + digits[1];
+      // Sort by digit value in descending order to find the two highest
+      // For ties, prefer the earlier position for consistent behavior
+      std::sort(digits.begin(), digits.end(),
+                [](const std::pair<int, size_t>& a,
+                   const std::pair<int, size_t>& b) {
+                  return a.first > b.first ||
+                         (a.first == b.first && a.second < b.second);
+                });
+
+      // Get the two highest digits
+      std::pair<int, size_t> first = digits[0];
+      std::pair<int, size_t> second = digits[1];
+
+      // The one that comes first in the original line is in tens place
+      int twoDigitNumber;
+      if (first.second < second.second) {
+        twoDigitNumber = first.first * 10 + second.first;
+      } else {
+        twoDigitNumber = second.first * 10 + first.first;
+      }
       total += twoDigitNumber;
     } else if (digits.size() == 1) {
       // If only one digit, treat it as single digit
-      total += digits[0];
+      total += digits[0].first;
     }
   }
 
