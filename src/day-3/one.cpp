@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -6,13 +5,14 @@
 
 /**
  * @brief Program that reads lines from input.txt, extracts digits,
- * finds the two highest digits, and combines them into a 2-digit number
- * where the digit appearing first in the original line is in the tens place.
+ * and finds the maximum 2-digit joltage by selecting two digits
+ * where the first chosen digit is in the tens place.
  *
  * For each line:
- * - Extract all digit characters with their positions
- * - Sort to find the two highest digits
- * - Combine them: the one appearing first in original line is in tens place
+ * - Extract all digit characters
+ * - For each digit at position i, find max digit at position j > i
+ * - Combine as digit[i] * 10 + digit[j] to form joltage
+ * - Find the maximum such joltage
  * - Add to total
  *
  * @return int 0 on successful completion, 1 if input.txt could not be opened.
@@ -32,40 +32,40 @@ int main() {
       continue;
     }
 
-    // Extract digits from the line into a vector with their positions
-    std::vector<std::pair<int, size_t>> digits;  // (digit value, position)
+    // Extract digits from the line into a vector
+    std::vector<int> digits;
 
-    for (size_t i = 0; i < line.length(); i++) {
-      if (line[i] >= '0' && line[i] <= '9') {
-        digits.push_back({line[i] - '0', i});
+    for (char c : line) {
+      if (c >= '0' && c <= '9') {
+        digits.push_back(c - '0');
       }
     }
 
     if (digits.size() >= 2) {
-      // Sort by digit value in descending order to find the two highest
-      // For ties, prefer the earlier position for consistent behavior
-      std::sort(digits.begin(), digits.end(),
-                [](const std::pair<int, size_t>& a,
-                   const std::pair<int, size_t>& b) {
-                  return a.first > b.first ||
-                         (a.first == b.first && a.second < b.second);
-                });
+      // Find maximum joltage by trying each digit as tens place
+      // and finding the max digit after it as ones place
+      int maxJoltage = 0;
+      size_t n = digits.size();
 
-      // Get the two highest digits
-      std::pair<int, size_t> first = digits[0];
-      std::pair<int, size_t> second = digits[1];
-
-      // The one that comes first in the original line is in tens place
-      int twoDigitNumber;
-      if (first.second < second.second) {
-        twoDigitNumber = first.first * 10 + second.first;
-      } else {
-        twoDigitNumber = second.first * 10 + first.first;
+      for (size_t i = 0; i + 1 < n; i++) {
+        // Find max digit after position i
+        int maxAfter = -1;
+        for (size_t j = i + 1; j < n; j++) {
+          if (digits[j] > maxAfter) {
+            maxAfter = digits[j];
+          }
+        }
+        if (maxAfter >= 0) {
+          int joltage = digits[i] * 10 + maxAfter;
+          if (joltage > maxJoltage) {
+            maxJoltage = joltage;
+          }
+        }
       }
-      total += twoDigitNumber;
+      total += maxJoltage;
     } else if (digits.size() == 1) {
       // If only one digit, treat it as single digit
-      total += digits[0].first;
+      total += digits[0];
     }
   }
 
