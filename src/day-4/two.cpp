@@ -5,13 +5,13 @@
 
 /**
  * @brief Program that reads a grid from input.txt and repeatedly removes
- * accessible paper rolls until none remain, then counts the remaining rolls.
+ * accessible paper rolls until none remain, then counts the total removed.
  *
  * A forklift can access a roll of paper if there are fewer than 4 rolls of
  * paper in the 8 adjacent positions (up, down, left, right, and 4 diagonals).
  *
  * The process continues until no more paper rolls can be accessed, and then
- * the count of remaining paper rolls is printed.
+ * the total count of removed paper rolls is printed.
  *
  * @return int 0 on successful completion, 1 if input.txt could not be opened.
  */
@@ -42,6 +42,7 @@ int main() {
   int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
 
   bool removed = true;
+  int totalRemoved = 0;
 
   // Keep removing accessible paper rolls until none can be removed
   while (removed) {
@@ -78,20 +79,11 @@ int main() {
     for (const auto& pos : toRemove) {
       grid[pos.first][pos.second] = '.';
       removed = true;
+      totalRemoved++;
     }
   }
 
-  // Count remaining paper rolls
-  int remainingCount = 0;
-  for (int r = 0; r < rows; r++) {
-    for (int c = 0; c < static_cast<int>(grid[r].size()); c++) {
-      if (grid[r][c] == '@') {
-        remainingCount++;
-      }
-    }
-  }
-
-  std::cout << remainingCount << std::endl;
+  std::cout << totalRemoved << std::endl;
 
   return 0;
 }
